@@ -1,0 +1,102 @@
+body{
+    text-align: center;
+    align-items: center;
+}
+.App{  
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh;
+}
+
+.firstcard{
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,.4);
+    border-radius: 12px;
+    padding: 32px;
+    width: 402px;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.color{
+    color: #888;
+}
+.drg{
+    margin: 2vh;
+}
+.drop-img{
+    border: dashed 2px grey;
+    padding: 7px;
+}
+input[type="file"] {
+    position: absolute;
+    z-index: -1;
+    top: 6px;
+    left: 0;
+    font-size: 15px;
+    color: rgb(153,153,153);
+    display:none;
+  }
+  .fa{
+      color: green;
+
+  }
+  
+  .btn1{
+      border-radius: 5px!important;
+      float: right;
+  }
+
+  .copy{
+    width: 100%;
+    box-shadow: 0 0 12px rgba(0,0,0,.4);
+    font-size: .75rem;
+    align-items: center;
+    width: 100%;
+    padding: .25rem;
+    background: #f6f8fb;
+    border-radius: 5px;
+    display: flex;
+    margin: 20px;
+  
+  }
+  span[contentEditable="false"]{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .file-input{
+      display: none;
+  }
+.loader{
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,.4);
+    border-radius: 12px;
+    padding: 10px;
+    width:300px;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.bar{
+    background: #fff;
+    box-shadow: 0 0px 3px rgba(0,0,0,.4);
+    border-radius: 4px;
+    height: 12px;
+    width: 257px;
+    flex-direction: column;
+    display: flex;
+    margin: 10px;
+}
+.fill{
+background-color: #0090d7;
+border-radius: 4px;
+height: 12px;
+}
