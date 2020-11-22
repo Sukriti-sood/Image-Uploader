@@ -1,4 +1,4 @@
-import React, { useState, useRef } from  "react";
+import React, { useState, useRef, useEffect } from  "react";
 import Loader from "./loader";
 import axios from "axios";
 function Uploader(){
@@ -10,8 +10,59 @@ function Uploader(){
     const [copied, setCopied] = useState(false);
     const[imgsrc,setimg]=useState();
 
+    const[isFile,setisFile]=useState(false);
     const fileinputref=useRef();
     const file2inputref=useRef();
+
+    useEffect(()=>{
+        if(isFile)
+        {
+            console.log("I am here")
+            let url;
+        const body=new FormData();
+        body.append("image",File);
+        
+        console.log("I am here")
+      setTimeout(()=>{
+        try{
+
+            console.log("I am here")
+            var formData = new FormData();
+            var imagefile = File;
+            console.log(imagefile)
+            formData.append("image", imagefile);
+          console.log(formData.get("image"))
+            axios.post( '/uploader', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+            })
+                    .then((res)=>{
+
+            console.log("I am here")
+                        if(res.status!==200)
+                        setError("Error");
+                        else
+                        {
+                        console.log(res);
+                        url=res.url;
+                        setuploadurl(url);
+                        setimg(url);
+                        setCopied(url)
+                        setloading(false);
+                        }
+                    });
+                }
+                catch(err)
+                {
+                    setError(err.message);
+                }
+      },5000)
+           
+
+    }
+
+    },[File,isFile])
 function drop(ev)
 {
     ev.preventDefault();
@@ -24,40 +75,11 @@ function drop(ev)
 const handleFile=(file)=>{
 if(validateFile(file)){
 setFile(file);
+
+setloading(true);
+setisFile(true);
 console.log(file);
 console.log(file.size);
-setloading(true);
-setTimeout(()=>{
-    let url;
-    try{
-        const body=new FormData();
-        body.append("image",File);
-        axios({
-            method: 'post',
-            url: 'https://localhost:5000/uploader',
-            data: body,
-            headers: {'Content-Type': 'multipart/form-data' }
-            })
-            .then((res)=>{
-                if(res.statusCode!=200)
-                setError("Error")
-                console.log(res);
-                url=res.url;
-            });
-          
-    }
-    catch(err)
-    {
-        setError(err.message);
-    }
-    setTimeout(()=>{
-    setuploadurl(url);
-    setimg(url);
-    setCopied(url);
-    setloading(false)
-    },2000)
-    
-},5000)
 }
 else
 setError('File type not permitted');
@@ -103,7 +125,7 @@ const file2selected = () => {
             ):!loading?(
                 uploadurl?(
                     <div className="firstcard">
-<h1><i class="fa fa-check-circle" aria-hidden="true"></i></h1>
+<h1> <i class="fa fa-check-circle" aria-hidden="true"></i></h1>
 <h2>Uploaded Successfully</h2>
 <img src={imgsrc} alt=""></img>
 <span className="copy">
