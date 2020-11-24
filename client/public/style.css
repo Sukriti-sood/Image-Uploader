@@ -49,9 +49,11 @@ input[type="file"] {
   
   .btn1{
       border-radius: 5px!important;
-      float: right;
+      float: right!important;
   }
-
+.btn1:hover{
+background-color:green!important;
+}
   .copy{
     width: 100%;
     box-shadow: 0 0 12px rgba(0,0,0,.4);
@@ -61,15 +63,10 @@ input[type="file"] {
     padding: .25rem;
     background: #f6f8fb;
     border-radius: 5px;
-    display: flex;
     margin: 20px;
   
   }
-  span[contentEditable="false"]{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  
   .file-input{
       display: none;
   }
@@ -99,4 +96,10 @@ input[type="file"] {
 background-color: #0090d7;
 border-radius: 4px;
 height: 12px;
+}
+
+.upimg{
+    margin: 5%;
+    width: 90%;
+    height: 90%;
 }

@@ -2,18 +2,19 @@ import React, { useState, useRef, useEffect } from  "react";
 import Loader from "./loader";
 import axios from "axios";
 function Uploader(){
-
+//all states
     const[File,setFile]=useState([]);
     const[loading,setloading]=useState(false);
     const[error,setError]=useState(null)
     const [uploadurl,setuploadurl]=useState(null);
     const [copied, setCopied] = useState(false);
     const[imgsrc,setimg]=useState();
-
+    const copyref=useRef(null)
     const[isFile,setisFile]=useState(false);
     const fileinputref=useRef();
     const file2inputref=useRef();
 
+    // uploading image through axios but getting error< _|_ >
     useEffect(()=>{
         if(isFile)
         {
@@ -32,7 +33,7 @@ function Uploader(){
             console.log(imagefile)
             formData.append("image", imagefile);
           console.log(formData.get("image"))
-            axios.post( '/uploader', formData, {
+            axios.post( 'http://localhost:5000/uploader', formData, {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
@@ -44,8 +45,9 @@ function Uploader(){
                         setError("Error");
                         else
                         {
-                        console.log(res);
-                        url=res.url;
+                        console.log(res.data.url);
+                        url=res.data.url;
+                        console.log(url)
                         setuploadurl(url);
                         setimg(url);
                         setCopied(url)
@@ -63,6 +65,8 @@ function Uploader(){
     }
 
     },[File,isFile])
+
+    // handling drop.
 function drop(ev)
 {
     ev.preventDefault();
@@ -72,6 +76,8 @@ function drop(ev)
     handleFile(files[0]);
     
 }
+
+// handle file
 const handleFile=(file)=>{
 if(validateFile(file)){
 setFile(file);
@@ -85,6 +91,7 @@ else
 setError('File type not permitted');
 }
 
+// validating file
 const validateFile = (file) => {
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/x-icon'];
     if (validTypes.indexOf(file.type) === -1) {
@@ -93,13 +100,17 @@ const validateFile = (file) => {
     return true;
 }
 
+
+// allow drop
 function allowDrop(ev) {
   ev.preventDefault();
 }
 
+// transfereing click to input element
 function fileInputClicked(){
     fileinputref.current.click();
 }
+
 
 const fileSelected = () => {
     if (fileinputref.current.files.length) {
@@ -112,6 +123,29 @@ const file2selected = () => {
     }
 }
 
+function handlecopy(){
+
+    let currentNode = copyref.current;
+    if (document.body.createTextRange) {
+        const range = document.body.createTextRange();
+        range.moveToElementText(currentNode);
+        range.select();
+        document.execCommand('copy');
+        range.remove();
+        alert("Copied!")
+    } else if (window.getSelection) {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(currentNode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand('copy');
+        selection.removeAllRanges();
+        alert("Copied!")
+    } else {
+        alert("Could not select text, Unsupported browser");
+    }
+}
     return (
         <>
         <div className="app">
@@ -127,10 +161,10 @@ const file2selected = () => {
                     <div className="firstcard">
 <h1> <i class="fa fa-check-circle" aria-hidden="true"></i></h1>
 <h2>Uploaded Successfully</h2>
-<img src={imgsrc} alt=""></img>
+<img className="upimg" src={imgsrc} alt=""></img>
 <span className="copy">
-    <span contentEditable="false">{copied}</span>
-    <button className="btn1 btn-primary">Copy Link</button>
+    <span ref={copyref} value={copied}>{copied}</span>
+    <button className="btn1 btn-primary" onClick={handlecopy}>Copy Link</button>
 </span>
 </div>
                 ):(
